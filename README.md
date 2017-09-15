@@ -1,6 +1,6 @@
 # quick_start_mpa
 
-> 一个基于vue-cli快速启动多页引用的架手架
+> 一个基于quick_start_mpa快速启动多页引用的架手架示例
 默认集成 vue vue-router vuex axios less eslint ...
 
 ## Build Setup
