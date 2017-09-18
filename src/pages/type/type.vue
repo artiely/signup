@@ -45,7 +45,8 @@
                       <span slot="append" class="code-btn" @click="getMsgCode"
                             style="cursor: pointer;display: inline-block"
                             v-if="count==60">{{$t('message.UseItem')}}</span>
-                      <span slot="append" class="code-btn count" v-if="count!=60">{{count}}</span>
+                      <span slot="append" class="code-btn count"
+                            v-if="count!=60">{{count}}s {{$t('message.Resend')}}</span>
                       </Input>
                     </Form-item>
                   </div>
@@ -65,13 +66,16 @@
                   </Form-item>
                   <!--不是手机号注册的才需要绑定手机号-->
                   <div v-if="!isMobile">
-                    <Form-item label="手机号" prop="phone">
+                    <Form-item :label="$t('message.PhoneNumber')" prop="phone">
                       <Input v-model="formCustom.phone" :placeholder="$t('message.Please_input')"></Input>
                     </Form-item>
-                    <Form-item label="短信验证码" prop="code">
+                    <Form-item :label="$t('message.Auth_code')" prop="code">
                       <Input v-model="formCustom.code" :placeholder="$t('message.Please_input')">
-                      <span slot="append" v-if="count==60" @click="getMsgCode">{{$t('message.UseItem')}}</span>
-                      <span slot="append" class="code-btn count" v-if="count!=60">{{count}}s {{$t('message.Resend')}}</span>
+                      <span slot="append" class="code-btn" @click="getMsgCode"
+                            style="cursor: pointer;display: inline-block"
+                            v-if="count==60">{{$t('message.UseItem')}}</span>
+                      <span slot="append" class="code-btn count"
+                            v-if="count!=60">{{count}}s {{$t('message.Resend')}}</span>
                       </Input>
                     </Form-item>
                   </div>
@@ -176,7 +180,7 @@
               {message: this.$t('message.Letter_only'), pattern: /^[a-z]+$/i}
             ],
             companyIdNum: [
-              {required: true, message: this.$t('message.Required_fields'), trigger: 'blur'},
+//              {required: true, message: this.$t('message.Required_fields'), trigger: 'blur'},
               {validator: validateCompanyId}
             ],
             idCard: [
@@ -229,8 +233,8 @@
         this.loading = true
         this.$refs[name].validate((valid) => {
           if (valid) {
-            // 如果有source=email 就是从邮件来的 就是提交 否则是修改
-            if (this.isEmail || this.isMobile) {
+            // 如果有source=email 就是从邮件来的 就是提交 否则是修改 state=4位登陆后信息不全的时候
+            if (this.isEmail || this.isMobile || (GetQueryString('state') && GetQueryString('state') === '4')) {
               if (Number(this.formCustom.typeId) === 1) { // 个人
                 this._saveUserInfo()
               } else { // 企业
@@ -302,6 +306,13 @@
           telephone: this.formCustom.phone,
           type: 0
         }
+        let s = setInterval(() => {
+          this.count--
+          if (this.count === 0) {
+            this.count = 60
+            clearInterval(s)
+          }
+        }, 1000)
         this.$api.GET_MSG_CODE(data).then(res => {
           if (res.code === 0) {
             this.$Message.info(this.$t('message.Msg_send'))
@@ -367,6 +378,7 @@
             personSex: this.formCustom.idCard.substring(16, 1) % 2 ? '1' : '0',
             idCard: this.formCustom.idCard,
             telephone: this.formCustom.phone,
+            code: this.formCustom.code,
             email: this.editData.email,
             personId: this.editData.personId,
             rowChangeLogId: this.editData.rowChangeLogId,
@@ -489,6 +501,11 @@
     position: absolute;
     height: 100%;
     width: 100%;
+  }
+
+  .code-btn {
+    width: 80px;
+    display: inline-block;
   }
 
   #app {

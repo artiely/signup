@@ -282,7 +282,7 @@
 
 <style lang="less">
   .code-btn {
-    width: 60px;
+    width: 80px;
     display: inline-block;
   }
 
