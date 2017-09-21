@@ -348,15 +348,20 @@
         this.$api.POST_USER_INFO(data).then(res => {
           this.loading = false
           if (res.code === 0) {
-            this.$Message.success('提交成功!')
-            let url = window.location.href
-            if (window.location.search === '') {
-              url = window.location.href
+            if (res.state !== '1') {
+              alert('验证码错误或过期')
+              return
             } else {
-              url = url.split(window.location.search)[0]
+              this.$Message.success('提交成功!')
+              let url = window.location.href
+              if (window.location.search === '') {
+                url = window.location.href
+              } else {
+                url = url.split(window.location.search)[0]
+              }
+              url = url.replace('type.html', 'login.html')
+              window.location.href = url
             }
-            url = url.replace('type.html', 'login.html')
-            window.location.href = url
           } else {
             alert(JSON.stringify(res))
           }
@@ -402,15 +407,20 @@
         this.$api.UPDATE_REGISTER_INFO(Object.assign({}, eData)).then(res => {
           this.loading = false
           if (res.code === 0) {
-            this.$Message.success(this.$t('message.Success'))
-            let url = window.location.href
-            if (window.location.search === '') {
-              url = window.location.href
+            if (res.state !== '1') {
+              alert('验证码错误或过期')
+              return
             } else {
-              url = url.split(window.location.search)[0]
+              this.$Message.success(this.$t('message.Success'))
+              let url = window.location.href
+              if (window.location.search === '') {
+                url = window.location.href
+              } else {
+                url = url.split(window.location.search)[0]
+              }
+              url = url.replace('type.html', 'login.html')
+              window.location.href = url
             }
-            url = url.replace('type.html', 'login.html')
-            window.location.href = url
           } else {
             alert(JSON.stringify(res))
           }
