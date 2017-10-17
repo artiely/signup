@@ -333,8 +333,8 @@
           personSex: this.formCustom.idCard.substring(16, 1) % 2 ? '1' : '0',
           idCard: this.formCustom.idCard,
           telephone: this.formCustom.phone,
-          promotionTableName: GetQueryString('promotionTableName') || '',
-          promotionTableId: GetQueryString('promotionTableId') || '',
+          table_name: GetQueryString('table_name') || '',
+          table_id: GetQueryString('table_id') || '',
           email: GetQueryString('e') || '',
           code: this.formCustom.code,
           source: GetQueryString('source') || ''
@@ -437,8 +437,8 @@
           email: GetQueryString('e') || '',
           telephone: this.formCustom.phone,
           code: this.formCustom.code,
-          promotionTableName: GetQueryString('promotionTableName') || '',
-          promotionTableId: GetQueryString('promotionTableId') || '',
+          table_name: GetQueryString('table_name') || '',
+          table_id: GetQueryString('table_id') || '',
           source: 'email'
         }
         if (this.isMobile) {

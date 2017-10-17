@@ -3,51 +3,24 @@
     <Row class="bg" :style="{background:'url('+bgUrl+')'}">
       <Col :xs="16" offset="4">
       <Card style="margin: 100px auto;max-width: 600px;padding-top: 20px">
-        <!--<Steps :current="0" size="small" style="padding-left: 70px;padding-bottom: 10px">-->
-        <!--<Step title="基本信息"></Step>-->
-        <!--<Step title="邮箱激活"></Step>-->
-        <!--<Step title="信息登记"></Step>-->
-        <!--</Steps>-->
+
         <Form ref="formCustom" :model="formCustom" :rules="ruleCustom" :label-width="120">
           <!--<small class="help">每个邮箱只能申请一种账号，如是注册企业账号，建议使用企业邮箱；个人账号，使用个人邮箱</small>-->
           <Tabs v-model="registerType" :animated="false">
-            <!--邮箱注册-->
-            <TabPane :label="$t('message.Email_singUp')" name="eType">
-              <div v-if="registerType=='eType'">
-                <Form-item :label="$t('message.Email')" prop="mail">
-                  <!--<Input v-model="formCustom.mail" placeholder="请输入"></Input>-->
-                  <AutoComplete
-                    v-model="formCustom.mail"
-                    @on-search="autoMail"
-                    :placeholder="$t('message.Please_input')"
-                  >
-                    <Option v-for="item in mailList" :value="item" :key="item">{{ item }}</Option>
-                  </AutoComplete>
-                </Form-item>
-                <Form-item :label="$t('message.Password')" prop="passwd">
-                  <Input type="password" v-model="formCustom.passwd"></Input>
-                </Form-item>
-                <Form-item :label="$t('message.Check_password')" prop="passwdCheck">
-                  <Input type="password" v-model="formCustom.passwdCheck"></Input>
-                </Form-item>
-                <Form-item>
-                  <Button type="primary" @click="handleSubmit('formCustom')" long>{{$t('message.Submit')}}</Button>
-                </Form-item>
-              </div>
-            </TabPane>
+
             <!--手机号注册-->
             <TabPane :label="$t('message.PhoneNumber_singUp')" name="mType">
               <div v-if="registerType=='mType'">
                 <Form-item :label="$t('message.PhoneNumber')" prop="phone">
                   <Input v-model="formCustom.phone" :placeholder="$t('message.Please_input')"></Input>
                 </Form-item>
-                <Form-item :label="$t('message.Auth_code')" prop="code">
-                  <Input v-model="formCustom.code" :placeholder="$t('message.Please_input')">
-                  <span slot="append" class="code-btn" @click="getMsgCode" style="cursor: pointer;display: inline-block"
-                        v-if="count==60">{{$t('message.UseItem')}}</span>
-                  <span slot="append" class="code-btn count" v-if="count!=60">{{count}}s {{$t('message.Resend')}}</span>
-                  </Input>
-                </Form-item>
+                <!--<Form-item :label="$t('message.Auth_code')" prop="code">-->
+                  <!--<Input v-model="formCustom.code" :placeholder="$t('message.Please_input')">-->
+                  <!--<span slot="append" class="code-btn" @click="getMsgCode" style="cursor: pointer;display: inline-block"-->
+                        <!--v-if="count==60">{{$t('message.UseItem')}}</span>-->
+                  <!--<span slot="append" class="code-btn count" v-if="count!=60">{{count}}s {{$t('message.Resend')}}</span>-->
+                  <!--</Input>-->
+                <!--</Form-item>-->
                 <Form-item :label="$t('message.Password')" prop="passwd">
                   <Input type="password" v-model="formCustom.passwd"></Input>
                 </Form-item>
@@ -76,7 +49,7 @@
     name: 'register',
     data () {
       return {
-        registerType: 'eType',
+        registerType: 'mType',
         bgUrl: bgUrl,
         mailList: [],
         count: 60,
@@ -235,7 +208,7 @@
             if (res.state === '1') { // 成功
 //              this.$router.push('/type')
               let url = window.location.href
-              window.location.href = url.replace('register.html', 'type.html')
+              window.location.href = url.replace('addregister.html', 'type.html')
             } else if (res.state === '2') { // 不正确
               alert(this.$t('message.Wrong_captcha'))
               this.error.code = '验证码错误'
