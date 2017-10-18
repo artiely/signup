@@ -234,13 +234,14 @@
         this.$refs[name].validate((valid) => {
           if (valid) {
             // 如果有source=email 就是从邮件来的 就是提交 否则是修改 state=4位登陆后信息不全的时候
-            if (this.isEmail || this.isMobile || (GetQueryString('state') && GetQueryString('state') === '4')) {
-              if (Number(this.formCustom.typeId) === 1) { // 个人
+            console.log('data', this.formCustom, this.isEmail, this.isMobile, GetQueryString('state'), GetQueryString('state') === '4')
+            if (this.isEmail || this.isMobile || GetQueryString('state') === '4') {
+              if (this.formCustom.typeId === '1') { // 个人
                 this._saveUserInfo()
               } else { // 企业
                 this._saveCompanyInfo()
               }
-            } else { // 不带 source 的是修改
+            } else if (GetQueryString('edit') === '1') { // 是修改
               this._updateCompanyOrUserInfo()
             }
           } else {
@@ -458,11 +459,15 @@
             } else {
               url = url.split(window.location.search)[0]
             }
+
             url = url.replace('type.html', 'login.html')
             window.location.href = url
           } else {
             alert(JSON.stringify(res))
           }
+        }).catch((err) => {
+          this.loading = false
+          console.log(err)
         })
       },
       _getRegisterInfo () {
@@ -489,12 +494,32 @@
 
       }
     },
+    beforeCreate () {
+      // 获取地址栏地址
+      let uri = window.location.href
+      console.log(uri)
+      if (uri.indexOf('&amp;') !== -1) {
+        uri = window.location.href.replace(/&amp;/g, '&')
+        window.location.href = uri
+      }
+      if (uri.indexOf('&;') !== -1) {
+        uri = window.location.href.replace(/&;/g, '&')
+        window.location.href = uri
+      }
+      console.log(uri)
+    },
     created () {
       /**
        * 看连接是否带source 判断source（来源）是否邮件
        * 是邮件判断token是否过期
        * 否则判断是否是手机注册
        */
+//      var href = window.location.href
+//      console.log('之前的href', href)
+//      href.replace(/&amp;|&;/g, '&')
+//      window.location.href = href
+//      window.reload()
+//      console.log('之后的href', href)
       this.checkToken()
 //      if ((GetQueryString('source') && (GetQueryString('source') === 'email'))) {
 //        this.isEmail = true

@@ -192,7 +192,7 @@
         console.log('biu....')
         let data = {
           telephone: this.formCustom.phone,
-          type: 0
+          type: 1
         }
         var c = setInterval(() => {
           this.count--
