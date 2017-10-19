@@ -20,7 +20,7 @@
                   <Form-item :label="$t('message.Company_name')" prop="company">
                     <Input v-model="formCustom.company" :placeholder="$t('message.Please_input')"></Input>
                   </Form-item>
-                  <small class="help">{{$t('message.Mark_help')}}</small>
+                  <!--<small class="help">{{$t('message.Mark_help')}}</small>-->
                   <Form-item :label="$t('message.Mark')" prop="mark">
                     <Input v-model="formCustom.mark" :placeholder="$t('message.Please_input')"></Input>
                   </Form-item>

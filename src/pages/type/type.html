@@ -4,6 +4,27 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
     <title>登记信息</title>
+  <script>
+    function isPC () {
+      var userAgentInfo = navigator.userAgent
+      var Agents = ['Android', 'iPhone', 'SymbianOS', 'Windows Phone', 'iPad', 'iPod']
+      var flag = true
+      for (var v = 0; v < Agents.length; v++) {
+        if (userAgentInfo.indexOf(Agents[v]) > 0) {
+          flag = false
+          break
+        }
+      }
+      return flag
+    }
+    if (!isPC()) {
+      var url = window.location.href
+//        url = url.split('#')[0]
+      url = url.replace('type.html', 'mobile.html#type')
+      window.location.href = url
+      console.log('123', url)
+    }
+  </script>
 </head>
 <body>
 <div id="app">
