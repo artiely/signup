@@ -12,6 +12,36 @@
           <Form ref="formCustom" :model="formCustom" :rules="ruleCustom" :label-width="120">
             <!--<small class="help" v-if="source">一个邮箱只能注册一种类型账号</small>-->
             <Tabs v-model="formCustom.typeId" :animated="false">
+
+              <!--个人-->
+              <TabPane :label="$t('message.Personage')" name="1" :disabled="isEdit">
+                <div v-if="formCustom.typeId==1">
+                  <Form-item :label="$t('message.Name')" prop="userName">
+                    <Input v-model="formCustom.userName" :placeholder="$t('message.Please_input')"></Input>
+                  </Form-item>
+                  <!-- <Form-item :label="$t('message.Gender')" prop="sex">
+                     <Radio-group v-model="formCustom.sex">
+                       <Radio label="1">{{$t('message.Male')}}</Radio>
+                       <Radio label="0">{{$t('message.Female')}}</Radio>
+                     </Radio-group>
+                   </Form-item>-->
+                  <!--不是手机号注册的才需要绑定手机号-->
+                  <div v-if="!isMobile">
+                    <Form-item :label="$t('message.PhoneNumber')" prop="phone">
+                      <Input v-model="formCustom.phone" :placeholder="$t('message.Please_input')"></Input>
+                    </Form-item>
+                    <Form-item :label="$t('message.Auth_code')" prop="code">
+                      <Input v-model="formCustom.code" :placeholder="$t('message.Please_input')">
+                      <span slot="append" class="code-btn" @click="getMsgCode"
+                            style="cursor: pointer;display: inline-block"
+                            v-if="count==60">{{$t('message.UseItem')}}</span>
+                      <span slot="append" class="code-btn count"
+                            v-if="count!=60">{{count}}s {{$t('message.Resend')}}</span>
+                      </Input>
+                    </Form-item>
+                  </div>
+                </div>
+              </TabPane>
               <!--企业-->
               <TabPane :label="$t('message.Company')" name="2" :disabled="isEdit">
                 <!--:disabled="!isMobile && !isEmail"-->
@@ -32,41 +62,12 @@
                   <Form-item :label="$t('message.AdminName')" prop="userName">
                     <Input v-model="formCustom.userName" :placeholder="$t('message.Please_input')"></Input>
                   </Form-item>
-                  <Form-item :label="$t('message.Admin_id_num')" prop="idCard">
+                  <!--<Form-item :label="$t('message.Admin_id_num')" prop="idCard">
                     <Input v-model="formCustom.idCard" :placeholder="$t('message.Please_input')"></Input>
-                  </Form-item>
+                  </Form-item>-->
                   <!--不是手机号注册的才需要绑定手机号-->
                   <div v-if="!isMobile">
                     <Form-item :label="$t('message.Admin_phone_num')" prop="phone">
-                      <Input v-model="formCustom.phone" :placeholder="$t('message.Please_input')"></Input>
-                    </Form-item>
-                    <Form-item :label="$t('message.Auth_code')" prop="code">
-                      <Input v-model="formCustom.code" :placeholder="$t('message.Please_input')">
-                      <span slot="append" class="code-btn" @click="getMsgCode"
-                            style="cursor: pointer;display: inline-block"
-                            v-if="count==60">{{$t('message.UseItem')}}</span>
-                      <span slot="append" class="code-btn count"
-                            v-if="count!=60">{{count}}s {{$t('message.Resend')}}</span>
-                      </Input>
-                    </Form-item>
-                  </div>
-                </div>
-              </TabPane>
-              <!--个人-->
-              <TabPane :label="$t('message.Personage')" name="1" :disabled="isEdit">
-                <div v-if="formCustom.typeId==1">
-                  <Form-item :label="$t('message.Name')" prop="userName">
-                    <Input v-model="formCustom.userName" :placeholder="$t('message.Please_input')"></Input>
-                  </Form-item>
-                  <Form-item :label="$t('message.Gender')" prop="sex">
-                    <Radio-group v-model="formCustom.sex">
-                      <Radio label="1">{{$t('message.Male')}}</Radio>
-                      <Radio label="0">{{$t('message.Female')}}</Radio>
-                    </Radio-group>
-                  </Form-item>
-                  <!--不是手机号注册的才需要绑定手机号-->
-                  <div v-if="!isMobile">
-                    <Form-item :label="$t('message.PhoneNumber')" prop="phone">
                       <Input v-model="formCustom.phone" :placeholder="$t('message.Please_input')"></Input>
                     </Form-item>
                     <Form-item :label="$t('message.Auth_code')" prop="code">
@@ -116,8 +117,9 @@
   </div>
 </template>
 <script>
-  import { GetQueryString } from '@/utils'
+  import {GetQueryString} from '@/utils'
   import bgUrl from '@/assets/img/bg_login.jpg'
+
   export default {
     name: 'type',
     data () {
@@ -131,13 +133,13 @@
         isEdit: false,
         count: 60,
         formCustom: {
-          typeId: '2', // 2 企业 1 个人
+          typeId: '1', // 2 企业 1 个人
           company: '',
           mark: '',
           companyIdNum: '', // 营业执照号
           userName: '',
-          idCard: '',
-          sex: '1',
+//          idCard: '',
+//          sex: '1',
           phone: '',
           code: ''
         },
@@ -183,14 +185,14 @@
 //              {required: true, message: this.$t('message.Required_fields'), trigger: 'blur'},
               {validator: validateCompanyId}
             ],
-            idCard: [
-              {required: true, message: this.$t('message.Required_fields'), trigger: 'blur'},
-              {
-                message: this.$t('message.Incorrect_format'),
-                trigger: 'blur',
-                pattern: /^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}\w{1}$/
-              }
-            ],
+            /* idCard: [
+               {required: true, message: this.$t('message.Required_fields'), trigger: 'blur'},
+               {
+                 message: this.$t('message.Incorrect_format'),
+                 trigger: 'blur',
+                 pattern: /^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}\w{1}$/
+               }
+             ], */
             userName: [
               {required: true, message: this.$t('message.Required_fields')}
             ],
@@ -233,6 +235,7 @@
         this.loading = true
         this.$refs[name].validate((valid) => {
           if (valid) {
+            console.log('---验证通过----')
             // 如果有source=email 就是从邮件来的 就是提交 否则是修改 state=4位登陆后信息不全的时候
             console.log('data', this.formCustom, this.isEmail, this.isMobile, GetQueryString('state'), GetQueryString('state') === '4')
             if (this.isEmail || this.isMobile || GetQueryString('state') === '4') {
@@ -290,7 +293,7 @@
       checkMobile () {
         this.$api.CHECK_BIND_MOBILE().then(res => {
           if (res.code === 0) {
-            if (res.exist === 1) { // 是手机号登录(注册)
+            if (res.exist === '1') { // 是手机号登录(注册)
               this.isMobile = true
             } else {
               this.isMobile = false
@@ -331,8 +334,8 @@
           comp_eng_short_name: this.formCustom.mark,
           business_license_number: this.formCustom.companyIdNum,
           personName: this.formCustom.userName,
-          personSex: this.formCustom.idCard.substring(16, 1) % 2 ? '1' : '0',
-          idCard: this.formCustom.idCard,
+//          personSex: this.formCustom.idCard.substring(16, 1) % 2 ? '1' : '0',
+//          idCard: this.formCustom.idCard,
           telephone: this.formCustom.phone,
           table_name: GetQueryString('table_name') || '',
           table_id: GetQueryString('table_id') || '',
@@ -381,8 +384,8 @@
             comp_eng_short_name: this.formCustom.mark,
             business_license_number: this.formCustom.companyIdNum,
             personName: this.formCustom.userName,
-            personSex: this.formCustom.idCard.substring(16, 1) % 2 ? '1' : '0',
-            idCard: this.formCustom.idCard,
+//            personSex: this.formCustom.idCard.substring(16, 1) % 2 ? '1' : '0',
+//            idCard: this.formCustom.idCard,
             telephone: this.formCustom.phone,
             code: this.formCustom.code,
             email: this.editData.email,
@@ -419,7 +422,13 @@
               } else {
                 url = url.split(window.location.search)[0]
               }
-              url = url.replace('type.html', 'login.html')
+              ;
+              var _bakc = GetQueryString('back')
+              if (_bakc === '1') {
+                url = url.replace('type.html', 'index.html')
+              } else {
+                url = url.replace('type.html', 'login.html')
+              }
               window.location.href = url
             }
           } else {
@@ -475,17 +484,17 @@
           if (res.code === 0) {
             let data = res.registeInfo[0]
             this.editData = data
-            let {typeId, company, mark, companyIdNum, userName, idCard, sex, phone} = {
+            let {typeId, company, mark, companyIdNum, userName, phone} = {
               typeId: data.accountType,
               company: data.companyName,
               mark: data.compEngShortName,
               companyIdNum: data.businessLicenseNumber,
               userName: data.personName,
-              idCard: data.idCard,
-              sex: data.personSex === '男' ? '1' : '0',
+//              idCard: data.idCard,
+//              sex: data.personSex === '男' ? '1' : '0',
               phone: data.telephone
             }
-            this.formCustom = {typeId, company, mark, companyIdNum, userName, idCard, sex, phone}
+            this.formCustom = {typeId, company, mark, companyIdNum, userName, phone}
             console.log(data, this.formCustom)
           }
         })

@@ -147,6 +147,19 @@ const CHECK_BIND_MOBILE = params => {
   })
 }
 
+/**
+ * 邀请码加入公司
+ * @param params
+ * @constructor
+ */
+const CODE_JOIN_COMPANY = params => {
+  return fetch({
+    url: '/person/inviteCodeJoinCompany',
+    method: 'post',
+    data: params
+  })
+}
+
 const apiList = {
   CHECK_EMAIL,
   REGISTER,
@@ -159,7 +172,8 @@ const apiList = {
   CHECK_PHONE,
   CHECK_ACCOUNT,
   REGISTER_BY_MOBILE,
-  CHECK_BIND_MOBILE
+  CHECK_BIND_MOBILE,
+  CODE_JOIN_COMPANY
 }
 
 export default apiList

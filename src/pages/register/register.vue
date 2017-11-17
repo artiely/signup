@@ -59,6 +59,36 @@
                 </Form-item>
               </div>
             </TabPane>
+            <!--加入公司-->
+            <TabPane label="加入公司" name="jType">
+              <div v-if="registerType=='jType'">
+                <Form-item label="姓名" prop="userName">
+                  <Input v-model="formCustom.userName" :placeholder="$t('message.Please_input')"></Input>
+                </Form-item>
+                <Form-item label="邀请码" prop="InvitationCode">
+                  <Input v-model="formCustom.InvitationCode" :placeholder="$t('message.Please_input')"></Input>
+                </Form-item>
+                <Form-item :label="$t('message.PhoneNumber')" prop="phone">
+                  <Input v-model="formCustom.phone" :placeholder="$t('message.Please_input')"></Input>
+                </Form-item>
+                <Form-item :label="$t('message.Auth_code')" prop="code">
+                  <Input v-model="formCustom.code" :placeholder="$t('message.Please_input')">
+                  <span slot="append" class="code-btn" @click="getMsgCode" style="cursor: pointer;display: inline-block"
+                        v-if="count==60">{{$t('message.UseItem')}}</span>
+                  <span slot="append" class="code-btn count" v-if="count!=60">{{count}}s {{$t('message.Resend')}}</span>
+                  </Input>
+                </Form-item>
+                <Form-item :label="$t('message.Password')" prop="passwd">
+                  <Input type="password" v-model="formCustom.passwd"></Input>
+                </Form-item>
+                <Form-item :label="$t('message.Check_password')" prop="passwdCheck">
+                  <Input type="password" v-model="formCustom.passwdCheck"></Input>
+                </Form-item>
+                <Form-item>
+                  <Button type="primary" @click="handleSubmit('formCustom')" long>{{$t('message.Submit')}}</Button>
+                </Form-item>
+              </div>
+            </TabPane>
           </Tabs>
         </Form>
         <small style="display: block;text-align: center">Copyright ©2001-2017 群思科技有限公司 <br>
@@ -85,7 +115,9 @@
           passwd: '',
           passwdCheck: '',
           phone: '',
-          code: ''
+          code: '',
+          userName: '',
+          InvitationCode: ''
         }
       }
     },
@@ -155,7 +187,7 @@
               {validator: validatePassCheck, trigger: 'blur'}
             ]
           }
-        } else {
+        } else if (this.registerType === 'mType') {
           return {
             phone: [
               {required: true, message: this.$t('message.Required_fields')},
@@ -166,6 +198,27 @@
                 pattern: /^[1][3,4,5,7,8][0-9]{9}$/
               },
               {validator: checkPhone, trigger: 'blur'}
+            ],
+            code: [{required: true, message: this.$t('message.Required_fields')}],
+            passwd: [
+              {validator: validatePass, trigger: 'blur'}
+            ],
+            passwdCheck: [
+              {validator: validatePassCheck, trigger: 'blur'}
+            ]
+          }
+        } else {
+          return {
+            userName: [{required: true, message: this.$t('message.Required_fields')}],
+            InvitationCode: [{required: true, message: this.$t('message.Required_fields')}],
+            phone: [
+              {required: true, message: this.$t('message.Required_fields')},
+              {
+                message: this.$t('message.Incorrect_format'),
+                len: 11,
+                trigger: 'blur',
+                pattern: /^[1][3,4,5,7,8][0-9]{9}$/
+              }
             ],
             code: [{required: true, message: this.$t('message.Required_fields')}],
             passwd: [
@@ -213,12 +266,36 @@
             if (this.registerType === 'eType') {
               this._postEmial()
               console.log('邮箱注册数据提交')
-            } else {
+            } else if (this.registerType === 'mType') {
               this._postMobile()
               console.log('手机注册数据提交')
+            } else {
+              this._joinCompany()
             }
           } else {
             this.$Message.error(this.$t('message.Validation_fails'))
+          }
+        })
+      },
+      _joinCompany () {
+        let data = {
+          inviteCode: this.formCustom.InvitationCode,
+          code: this.formCustom.code,
+          telephone: this.formCustom.phone,
+          password: this.formCustom.passwd,
+          personName: this.formCustom.userName
+        }
+        this.$api.CODE_JOIN_COMPANY(data).then(res => {
+          if (res.code === 0) {
+            if (res.state === '1') {
+              alert('保存成功')
+              let url = window.location.href
+              window.location.href = url.replace('register.html', 'login.html')
+            } else {
+              alert(res.info)
+            }
+          } else {
+            alert(JSON.stringify(res))
           }
         })
       },
