@@ -9,9 +9,9 @@
           <Tabs v-model="registerType" :animated="false">
 
             <!--手机号注册-->
-            <TabPane :label="$t('message.PhoneNumber_singUp')" name="mType">
+            <TabPane :label="$t('message.Registration_mobile')" name="mType">
               <div v-if="registerType=='mType'">
-                <Form-item :label="$t('message.PhoneNumber')" prop="phone">
+                <Form-item :label="$t('message.Phone_number')" prop="phone">
                   <Input v-model="formCustom.phone" :placeholder="$t('message.Please_input')"></Input>
                 </Form-item>
                 <!--<Form-item :label="$t('message.Auth_code')" prop="code">-->

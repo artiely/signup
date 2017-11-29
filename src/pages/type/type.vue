@@ -27,7 +27,7 @@
                    </Form-item>-->
                   <!--不是手机号注册的才需要绑定手机号-->
                   <div v-if="!isMobile">
-                    <Form-item :label="$t('message.PhoneNumber')" prop="phone">
+                    <Form-item :label="$t('message.Phone_number')" prop="phone">
                       <Input v-model="formCustom.phone" :placeholder="$t('message.Please_input')"></Input>
                     </Form-item>
                     <Form-item :label="$t('message.Auth_code')" prop="code">
@@ -104,7 +104,7 @@
           <!--<Step title="邮箱激活"></Step>-->
           <!--<Step title="信息登记"></Step>-->
           <!--</Steps>-->
-          <h3 style="color:#ed3f14;text-align: center"><p>链接过期或失效<a href="register.html"> 重新发送邮件</a></p></h3>
+          <h3 style="color:#ed3f14;text-align: center"><p> {{$t('message.Links_expire')}}<a href="register.html"> {{$t('message.Resend_message')}}</a></p></h3>
         </div>
         <small style="display: block;text-align: center">Copyright ©2001-2017 群思科技有限公司 <br>
           All rights reserved
@@ -353,10 +353,10 @@
           this.loading = false
           if (res.code === 0) {
             if (res.state !== '1') {
-              alert('验证码错误或过期')
+              alert(this.$t('message.Verification_code_error'))
               return
             } else {
-              this.$Message.success('提交成功!')
+              this.$Message.success(this.$t('message.Success'))
               let url = window.location.href
               if (window.location.search === '') {
                 url = window.location.href
@@ -412,7 +412,8 @@
           this.loading = false
           if (res.code === 0) {
             if (res.state !== '1') {
-              alert('验证码错误或过期')
+//              alert('验证码错误或过期')
+              alert(this.$t('message.Verification_code_error'))
               return
             } else {
               this.$Message.success(this.$t('message.Success'))

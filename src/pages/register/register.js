@@ -1,3 +1,4 @@
+import 'babel-polyfill'
 import Vue from 'vue'
 import App from './register.vue'
 import iView from 'iview'
@@ -7,12 +8,14 @@ import VueI18n from 'vue-i18n'
 import Locales from '@/i18n'
 import zhLocale from 'iview/dist/locale/zh-CN'
 import enLocale from 'iview/dist/locale/en-US'
+import twLocale from 'iview/dist/locale/zh-TW'
 import api from '@/api'
 
 Vue.use(api)
 Vue.use(VueI18n)
 Vue.use(iView)
 
+// 设置语言
 // 设置语言
 let lang = window.localStorage.getItem('fwlang')
 if (lang && (lang !== 'null' || lang !== 'undefined')) {
@@ -30,10 +33,12 @@ Vue.config.lang = lang
 
 // 多语言配置
 const locales = Locales
-const mergeZH = Object.assign(zhLocale, locales['zh-CN'])
-const mergeEN = Object.assign(enLocale, locales['en-US'])
+const mergeZH = Object.assign(zhLocale, locales['CN'])
+const mergeEN = Object.assign(enLocale, locales['EN'])
+const mergeTW = Object.assign(twLocale, locales['TN'])
 Vue.locale('zh-CN', mergeZH)
 Vue.locale('en-US', mergeEN)
+Vue.locale('zh-TW', mergeTW)
 
 new Vue({
   render: h => h(App)

@@ -12,7 +12,7 @@
           <!--<small class="help">每个邮箱只能申请一种账号，如是注册企业账号，建议使用企业邮箱；个人账号，使用个人邮箱</small>-->
           <Tabs v-model="registerType" :animated="false">
             <!--邮箱注册-->
-            <TabPane :label="$t('message.Email_singUp')" name="eType">
+            <TabPane :label="$t('message.signup_email')" name="eType">
               <div v-if="registerType=='eType'">
                 <Form-item :label="$t('message.Email')" prop="mail">
                   <!--<Input v-model="formCustom.mail" placeholder="请输入"></Input>-->
@@ -36,9 +36,9 @@
               </div>
             </TabPane>
             <!--手机号注册-->
-            <TabPane :label="$t('message.PhoneNumber_singUp')" name="mType">
+            <TabPane :label="$t('message.signup_phone')" name="mType">
               <div v-if="registerType=='mType'">
-                <Form-item :label="$t('message.PhoneNumber')" prop="phone">
+                <Form-item :label="$t('message.Phone_number')" prop="phone">
                   <Input v-model="formCustom.phone" :placeholder="$t('message.Please_input')"></Input>
                 </Form-item>
                 <Form-item :label="$t('message.Auth_code')" prop="code">
@@ -60,15 +60,15 @@
               </div>
             </TabPane>
             <!--加入公司-->
-            <TabPane label="加入公司" name="jType">
+            <TabPane :label="$t('message.join_company')" name="jType">
               <div v-if="registerType=='jType'">
-                <Form-item label="姓名" prop="userName">
+                <Form-item :label="$t('message.Name')" prop="userName">
                   <Input v-model="formCustom.userName" :placeholder="$t('message.Please_input')"></Input>
                 </Form-item>
-                <Form-item label="邀请码" prop="InvitationCode">
+                <Form-item :label="$t('message.InvitationCode')" prop="InvitationCode">
                   <Input v-model="formCustom.InvitationCode" :placeholder="$t('message.Please_input')"></Input>
                 </Form-item>
-                <Form-item :label="$t('message.PhoneNumber')" prop="phone">
+                <Form-item :label="$t('message.Phone_number')" prop="phone">
                   <Input v-model="formCustom.phone" :placeholder="$t('message.Please_input')"></Input>
                 </Form-item>
                 <Form-item :label="$t('message.Auth_code')" prop="code">
@@ -78,7 +78,7 @@
                   <span slot="append" class="code-btn count" v-if="count!=60">{{count}}s {{$t('message.Resend')}}</span>
                   </Input>
                 </Form-item>
-                <Form-item :label="$t('message.Password')" prop="passwd">
+                <Form-item :label="$t('message.password')" prop="passwd">
                   <Input type="password" v-model="formCustom.passwd"></Input>
                 </Form-item>
                 <Form-item :label="$t('message.Check_password')" prop="passwdCheck">
@@ -288,7 +288,7 @@
         this.$api.CODE_JOIN_COMPANY(data).then(res => {
           if (res.code === 0) {
             if (res.state === '1') {
-              alert('保存成功')
+//              alert('保存成功')
               let url = window.location.href
               window.location.href = url.replace('register.html', 'login.html')
             } else {
