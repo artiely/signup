@@ -306,8 +306,8 @@
           telephone: this.formCustom.phone,
           code: this.formCustom.code,
           password: this.formCustom.passwd,
-          table_name: GetQueryString('table_name') || Cookies.getJSON('table_id').table_name || '',
-          table_id: GetQueryString('table_id') || Cookies.getJSON('table_id').table_id || ''
+          table_name: GetQueryString('table_name') || (Cookies.getJSON('table_id') && Cookies.getJSON('table_id').table_name) || '',
+          table_id: GetQueryString('table_id') || (Cookies.getJSON('table_id') && Cookies.getJSON('table_id').table_id) || ''
         }
         this.$api.REGISTER_BY_MOBILE(data).then(res => {
           if (res.code === 0) {
@@ -337,8 +337,8 @@
           email: this.formCustom.mail,
           password: this.formCustom.passwd,
           url: url,
-          table_name: GetQueryString('table_name') || Cookies.getJSON('table_id').table_name || '',
-          table_id: GetQueryString('table_id') || Cookies.getJSON('table_id').table_id || '',
+          table_name: GetQueryString('table_name') || (Cookies.getJSON('table_id') && Cookies.getJSON('table_id').table_name) || '',
+          table_id: GetQueryString('table_id') || (Cookies.getJSON('table_id') && Cookies.getJSON('table_id').table_id) || '',
           open_id: GetQueryString('open_id') || ''
         }
         this.$api.REGISTER(data).then(res => { // 邮箱注册
@@ -358,7 +358,6 @@
     },
     components: {},
     created () {
-      console.log(Cookies.getJSON('table_id'))
     }
 
   }

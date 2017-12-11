@@ -117,6 +117,7 @@
   </div>
 </template>
 <script>
+  import Cookies from 'js-cookie'
   import {GetQueryString} from '@/utils'
   import bgUrl from '@/assets/img/bg_login.jpg'
 
@@ -337,8 +338,8 @@
 //          personSex: this.formCustom.idCard.substring(16, 1) % 2 ? '1' : '0',
 //          idCard: this.formCustom.idCard,
           telephone: this.formCustom.phone,
-          table_name: GetQueryString('table_name') || '',
-          table_id: GetQueryString('table_id') || '',
+          table_name: GetQueryString('table_name') || (Cookies.getJSON('table_id') && Cookies.getJSON('table_id').table_name) || '',
+          table_id: GetQueryString('table_id') || (Cookies.getJSON('table_id') && Cookies.getJSON('table_id').table_id) || '',
           email: GetQueryString('e') || '',
           code: this.formCustom.code,
           source: GetQueryString('source') || ''
@@ -448,8 +449,8 @@
           email: GetQueryString('e') || '',
           telephone: this.formCustom.phone,
           code: this.formCustom.code,
-          table_name: GetQueryString('table_name') || '',
-          table_id: GetQueryString('table_id') || '',
+          table_name: GetQueryString('table_name') || (Cookies.getJSON('table_id') && Cookies.getJSON('table_id').table_name) || '',
+          table_id: GetQueryString('table_id') || (Cookies.getJSON('table_id') && Cookies.getJSON('table_id').table_id) || '',
           source: 'email'
         }
         if (this.isMobile) {
