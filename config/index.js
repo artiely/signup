@@ -64,7 +64,8 @@ var config = {
 var interfaceArr = [
   '/*/sys/**/*',
   '/*/person/**/*',
-  '/*/mobileMsg/**/*'
+  '/*/mobileMsg/**/*',
+  '/*/company/**/*'
 ]
 for (let i = 0; i < interfaceArr.length; i++) {
   config.dev.proxyTable[interfaceArr[i]] = {

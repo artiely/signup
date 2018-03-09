@@ -4,34 +4,22 @@
       <Col :xs="16" offset="4">
       <Card style="margin: 100px auto;max-width: 600px;padding-top: 20px">
         <div v-if="token">
-          <!--<Steps :current="2" size="small" style="padding-left: 70px;padding-bottom: 10px" v-if="isEmail||isMobile">-->
-          <!--<Step title="基本信息"></Step>-->
-          <!--<Step title="邮箱激活"></Step>-->
-          <!--<Step title="信息登记"></Step>-->
-          <!--</Steps>-->
-          <Form ref="formCustom" :model="formCustom" :rules="ruleCustom" :label-width="120">
+          <Form ref="formCustom" :model="formCustom" :rules="ruleCustom" :label-width="130">
             <!--<small class="help" v-if="source">一个邮箱只能注册一种类型账号</small>-->
-            <Tabs v-model="formCustom.typeId" :animated="false">
-
+            <Tabs v-model.trim="formCustom.typeId" :animated="false">
               <!--个人-->
               <TabPane :label="$t('message.Personage')" name="1" :disabled="isEdit">
                 <div v-if="formCustom.typeId==1">
                   <Form-item :label="$t('message.Name')" prop="userName">
-                    <Input v-model="formCustom.userName" :placeholder="$t('message.Please_input')"></Input>
+                    <Input v-model.trim="formCustom.userName" :placeholder="$t('message.Please_input')"></Input>
                   </Form-item>
-                  <!-- <Form-item :label="$t('message.Gender')" prop="sex">
-                     <Radio-group v-model="formCustom.sex">
-                       <Radio label="1">{{$t('message.Male')}}</Radio>
-                       <Radio label="0">{{$t('message.Female')}}</Radio>
-                     </Radio-group>
-                   </Form-item>-->
                   <!--不是手机号注册的才需要绑定手机号-->
                   <div v-if="!isMobile">
                     <Form-item :label="$t('message.Phone_number')" prop="phone">
-                      <Input v-model="formCustom.phone" :placeholder="$t('message.Please_input')"></Input>
+                      <Input v-model.trim="formCustom.phone" :placeholder="$t('message.Please_input')"></Input>
                     </Form-item>
                     <Form-item :label="$t('message.Auth_code')" prop="code">
-                      <Input v-model="formCustom.code" :placeholder="$t('message.Please_input')">
+                      <Input v-model.trim="formCustom.code" :placeholder="$t('message.Please_input')">
                       <span slot="append" class="code-btn" @click="getMsgCode"
                             style="cursor: pointer;display: inline-block"
                             v-if="count==60">{{$t('message.UseItem')}}</span>
@@ -44,34 +32,33 @@
               </TabPane>
               <!--企业-->
               <TabPane :label="$t('message.Company')" name="2" :disabled="isEdit">
-                <!--:disabled="!isMobile && !isEmail"-->
                 <div v-if="formCustom.typeId==2">
                   <small class="help">{{$t('message.Company_name_help')}}</small>
                   <Form-item :label="$t('message.Company_name')" prop="company">
-                    <Input v-model="formCustom.company" :placeholder="$t('message.Please_input')"></Input>
+                    <Dropdown style="width:99%" @on-click="setInput">
+                      <Input v-model.trim="formCustom.company" :placeholder="$t('message.Please_input')"></Input>
+                      <DropdownMenu slot="list">
+                        <DropdownItem v-show="companyList.length==0">暂无匹配结果...</DropdownItem>
+                        <DropdownItem v-for="(item,i) in companyList" :name="item.sitem" :key="i">{{item.companyname}}</DropdownItem>
+                      </DropdownMenu>
+                    </Dropdown>
                   </Form-item>
-                  <!--<small class="help">{{$t('message.Mark_help')}}</small>-->
                   <Form-item :label="$t('message.Mark')" prop="mark">
-                    <Input v-model="formCustom.mark" :placeholder="$t('message.Please_input')"></Input>
+                    <Input v-model.trim="formCustom.mark" :placeholder="$t('message.Please_input')"></Input>
                   </Form-item>
                   <small class="help">{{$t('message.Company_id_num_help')}}</small>
                   <Form-item :label="$t('message.Company_id_num')" prop="companyIdNum">
-                    <Input v-model="formCustom.companyIdNum" :placeholder="$t('message.Please_input')"></Input>
+                    <Input v-model.trim="formCustom.companyIdNum" :placeholder="$t('message.Please_input')"></Input>
                   </Form-item>
-
                   <Form-item :label="$t('message.AdminName')" prop="userName">
-                    <Input v-model="formCustom.userName" :placeholder="$t('message.Please_input')"></Input>
+                    <Input v-model.trim="formCustom.userName" :placeholder="$t('message.Please_input')"></Input>
                   </Form-item>
-                  <!--<Form-item :label="$t('message.Admin_id_num')" prop="idCard">
-                    <Input v-model="formCustom.idCard" :placeholder="$t('message.Please_input')"></Input>
-                  </Form-item>-->
-                  <!--不是手机号注册的才需要绑定手机号-->
                   <div v-if="!isMobile">
                     <Form-item :label="$t('message.Admin_phone_num')" prop="phone">
-                      <Input v-model="formCustom.phone" :placeholder="$t('message.Please_input')"></Input>
+                      <Input v-model.trim="formCustom.phone" :placeholder="$t('message.Please_input')"></Input>
                     </Form-item>
                     <Form-item :label="$t('message.Auth_code')" prop="code">
-                      <Input v-model="formCustom.code" :placeholder="$t('message.Please_input')">
+                      <Input v-model.trim="formCustom.code" :placeholder="$t('message.Please_input')">
                       <span slot="append" class="code-btn" @click="getMsgCode"
                             style="cursor: pointer;display: inline-block"
                             v-if="count==60">{{$t('message.UseItem')}}</span>
@@ -83,14 +70,6 @@
                 </div>
               </TabPane>
             </Tabs>
-            <!--<Form-item label="类型" prop="typeId" v-if="source">-->
-            <!--<Radio-group v-model="formCustom.typeId">-->
-            <!--<Radio label="2">企业</Radio>-->
-            <!--<Radio label="1">个人</Radio>-->
-            <!--</Radio-group>-->
-            <!--</Form-item>-->
-
-
             <Form-item>
               <Button type="primary" @click.native="handleSubmit('formCustom')" long :loading="loading">
                 {{$t('message.Submit')}}
@@ -99,17 +78,11 @@
           </Form>
         </div>
         <div v-if="!token">
-          <!--<Steps :current="1" status="error" size="small" style="padding-left: 70px;padding-bottom: 10px">-->
-          <!--<Step title="基本信息"></Step>-->
-          <!--<Step title="邮箱激活"></Step>-->
-          <!--<Step title="信息登记"></Step>-->
-          <!--</Steps>-->
           <h3 style="color:#ed3f14;text-align: center"><p> {{$t('message.Links_expire')}}<a href="register.html"> {{$t('message.Resend_message')}}</a></p></h3>
         </div>
         <small style="display: block;text-align: center">Copyright ©2001-2017 群思科技有限公司 <br>
           All rights reserved
         </small>
-        <!--<pre>{{formCustom}}</pre>-->
       </Card>
       </Col>
     </Row>
@@ -125,11 +98,13 @@
     name: 'type',
     data () {
       return {
+        timer3: null,
         token: true,
         loading: false,
         bgUrl: bgUrl,
         isEmail: false, // 来源 为email时是true
         editData: {},
+        companyList: [],
         isMobile: false,
         isEdit: false,
         count: 60,
@@ -161,6 +136,25 @@
         }
       }
     },
+    watch: {
+      'formCustom.company': {
+        handler (val) {
+          clearTimeout(this.timer3)
+          this.timer3 = setTimeout(() => {
+            this.$api.GET_COMPANY_LICENSE({key: val}).then(res => {
+              console.log(res)
+              if (res.code === 0) {
+                console.log(res.list)
+                this.companyList = res.list.map(v => {
+                  v.sitem = JSON.stringify(v)
+                  return v
+                })
+              }
+            })
+          }, 600)
+        }
+      }
+    },
     computed: {
       ruleCustom () { // 计算验证规则
         const validateCompanyId = (rule, value, callback) => {
@@ -173,18 +167,54 @@
             callback()
           }
         }
+        var timer = null
+        const checkCompanyName = (rule, value, callback) => {
+          clearTimeout(timer)
+          timer = setTimeout(() => {
+            if (this.formCustom.company.length > 0) {
+              this.$api.CHECK_COMPANY_NAME({companyName: this.formCustom.company, companyID: this.editData.companyID}).then(res => {
+                if (res.code === 0) {
+                  if (res.state === 0) {
+                    callback()
+                  } else if (res.state === 1) {
+                    callback(new Error(res.info))
+                  }
+                }
+              })
+            }
+          }, 700)
+        }
+        var timer2 = null
+        const checkBusinessLicense = (rule, value, callback) => {
+          clearTimeout(timer2)
+          timer2 = setTimeout(() => {
+            if (this.formCustom.companyIdNum.length > 0) {
+              this.$api.CHECK_BUSINESS_LICENSE({businessLicenseNumber: this.formCustom.companyIdNum, companyID: this.editData.companyID}).then(res => {
+                if (res.code === 0) {
+                  if (res.state === 0) {
+                    callback()
+                  } else if (res.state === 1) {
+                    callback(new Error(res.info))
+                  }
+                }
+              })
+            }
+          }, 700)
+        }
         if (this.formCustom.typeId === '2') { // 企业规则
           return {
             company: [
-              {required: true, message: this.$t('message.Required_fields')}
+              {required: true, message: this.$t('message.Required_fields')},
+              {validator: checkCompanyName}
             ],
             mark: [
               {required: true, message: this.$t('message.Required_fields')},
               {message: this.$t('message.Letter_only'), pattern: /^[a-z]+$/i}
             ],
             companyIdNum: [
-//              {required: true, message: this.$t('message.Required_fields'), trigger: 'blur'},
-              {validator: validateCompanyId}
+              {required: true, message: this.$t('message.Required_fields'), trigger: 'blur'},
+              {validator: validateCompanyId},
+              {validator: checkBusinessLicense}
             ],
             /* idCard: [
                {required: true, message: this.$t('message.Required_fields'), trigger: 'blur'},
@@ -232,6 +262,12 @@
       }
     },
     methods: {
+      setInput (v) {
+        if (!v) return
+        let val = JSON.parse(v)
+        this.formCustom.company = val.companyname
+        this.formCustom.companyIdNum = val.businessLicenseNumber
+      },
       handleSubmit (name) {
         this.loading = true
         this.$refs[name].validate((valid) => {

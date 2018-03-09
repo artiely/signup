@@ -10,7 +10,7 @@
         <!--</Steps>-->
         <Form ref="formCustom" :model="formCustom" :rules="ruleCustom" :label-width="120">
           <!--<small class="help">每个邮箱只能申请一种账号，如是注册企业账号，建议使用企业邮箱；个人账号，使用个人邮箱</small>-->
-          <Tabs v-model="registerType" :animated="false">
+          <Tabs v-model.trim="registerType" :animated="false">
             <!--邮箱注册-->
             <TabPane :label="$t('message.signup_email')" name="eType">
               <div v-if="registerType=='eType'">
@@ -39,20 +39,20 @@
             <TabPane :label="$t('message.signup_phone')" name="mType">
               <div v-if="registerType=='mType'">
                 <Form-item :label="$t('message.Phone_number')" prop="phone">
-                  <Input v-model="formCustom.phone" :placeholder="$t('message.Please_input')"></Input>
+                  <Input v-model.trim="formCustom.phone" :placeholder="$t('message.Please_input')"></Input>
                 </Form-item>
                 <Form-item :label="$t('message.Auth_code')" prop="code">
-                  <Input v-model="formCustom.code" :placeholder="$t('message.Please_input')">
+                  <Input v-model.trim="formCustom.code" :placeholder="$t('message.Please_input')">
                   <span slot="append" class="code-btn" @click="getMsgCode" style="cursor: pointer;display: inline-block"
                         v-if="count==60">{{$t('message.UseItem')}}</span>
                   <span slot="append" class="code-btn count" v-if="count!=60">{{count}}s {{$t('message.Resend')}}</span>
                   </Input>
                 </Form-item>
                 <Form-item :label="$t('message.Password')" prop="passwd">
-                  <Input type="password" v-model="formCustom.passwd"></Input>
+                  <Input type="password" v-model.trim="formCustom.passwd"></Input>
                 </Form-item>
                 <Form-item :label="$t('message.Check_password')" prop="passwdCheck">
-                  <Input type="password" v-model="formCustom.passwdCheck"></Input>
+                  <Input type="password" v-model.trim="formCustom.passwdCheck"></Input>
                 </Form-item>
                 <Form-item>
                   <Button type="primary" @click="handleSubmit('formCustom')" long>{{$t('message.Submit')}}</Button>
@@ -63,26 +63,26 @@
             <TabPane :label="$t('message.join_company')" name="jType">
               <div v-if="registerType=='jType'">
                 <Form-item :label="$t('message.Name')" prop="userName">
-                  <Input v-model="formCustom.userName" :placeholder="$t('message.Please_input')"></Input>
+                  <Input v-model.trim="formCustom.userName" :placeholder="$t('message.Please_input')"></Input>
                 </Form-item>
                 <Form-item :label="$t('message.InvitationCode')" prop="InvitationCode">
-                  <Input v-model="formCustom.InvitationCode" :placeholder="$t('message.Please_input')"></Input>
+                  <Input v-model.trim="formCustom.InvitationCode" :placeholder="$t('message.Please_input')"></Input>
                 </Form-item>
                 <Form-item :label="$t('message.Phone_number')" prop="phone">
-                  <Input v-model="formCustom.phone" :placeholder="$t('message.Please_input')"></Input>
+                  <Input v-model.trim="formCustom.phone" :placeholder="$t('message.Please_input')"></Input>
                 </Form-item>
                 <Form-item :label="$t('message.Auth_code')" prop="code">
-                  <Input v-model="formCustom.code" :placeholder="$t('message.Please_input')">
+                  <Input v-model.trim="formCustom.code" :placeholder="$t('message.Please_input')">
                   <span slot="append" class="code-btn" @click="getMsgCode" style="cursor: pointer;display: inline-block"
                         v-if="count==60">{{$t('message.UseItem')}}</span>
                   <span slot="append" class="code-btn count" v-if="count!=60">{{count}}s {{$t('message.Resend')}}</span>
                   </Input>
                 </Form-item>
                 <Form-item :label="$t('message.password')" prop="passwd">
-                  <Input type="password" v-model="formCustom.passwd"></Input>
+                  <Input type="password" v-model.trim="formCustom.passwd"></Input>
                 </Form-item>
                 <Form-item :label="$t('message.Check_password')" prop="passwdCheck">
-                  <Input type="password" v-model="formCustom.passwdCheck"></Input>
+                  <Input type="password" v-model.trim="formCustom.passwdCheck"></Input>
                 </Form-item>
                 <Form-item>
                   <Button type="primary" @click="handleSubmit('formCustom')" long>{{$t('message.Submit')}}</Button>
